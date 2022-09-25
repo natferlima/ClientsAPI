@@ -1,5 +1,7 @@
 ﻿using clientsapi.DAL;
 using clientsapi.Models;
+using clientsapi.Repository;
+using clientsapi.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,40 +13,65 @@ namespace clientsapi.Controllers
 {
     public class ClientController : ApiController
     {
-        private readonly ClientDAL _clientDAL;
+        private readonly ClientRepository _clientRepository;
+        private readonly ClientValidator _clientValidator;
 
         public ClientController()
         {
-            _clientDAL = new ClientDAL();
+            _clientRepository = new ClientRepository();
+            _clientValidator = new ClientValidator();
         }
         public IHttpActionResult Get()
         {
-            IEnumerable<Client> clients = _clientDAL.GetClients();
+            IEnumerable<Client> clients = _clientRepository.GetClients();
             return Ok(clients);
         }
 
         public IHttpActionResult Post(Client client)
         {
-            _clientDAL.Add(client);
-            return Ok();
+            Validation validation = _clientValidator.ValidatorAdd(client);
+            if(validation.Error != null)
+            {
+                return BadRequest(validation.Error);
+            }
+            Validation result = _clientRepository.Add(client);
+            if(result.Error != null)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Message);
         }
 
         public IHttpActionResult Delete(string id)
         {
-            _clientDAL.Remove(id);
-            return Ok();
+            Validation validation = _clientRepository.Remove(id);
+            if(validation.Error != null)
+            {
+                return BadRequest(validation.Error);
+            }
+            return Ok(validation.Message);
         }
 
         public IHttpActionResult Get(string id)
         {
-            Client client = _clientDAL.GetClientById(id);
+            Client client = _clientRepository.GetClientById(id);
+            if(client == null || client.Id == 0)
+            {
+                return BadRequest("Cliente não encontrado.");
+            }
             return Ok(client);
         }
 
         public IHttpActionResult Put(Client client)
         {
-            _clientDAL.Update(client);
-            return Ok();
+            Validation validation = _clientRepository.Update(client);
+
+            if(validation.Error != null)
+            {
+                return BadRequest(validation.Error);
+            }
+
+            return Ok(validation.Message);
         }
     }
 }
