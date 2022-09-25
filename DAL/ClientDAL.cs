@@ -54,7 +54,7 @@ namespace clientsapi.DAL
             try
             {
                 cmd.Connection = conn;
-                cmd.CommandText = "Insert into Clientes (name, cpf, gender, idtype, idsituation) values (@name, @cpf, @gender, @idtype, @idsituation);select @@IDENTITY;";
+                cmd.CommandText = "Insert into Clients (name, cpf, gender, idtype, idsituation) values (@name, @cpf, @gender, @idtype, @idsituation);select @@IDENTITY;";
                 cmd.Parameters.AddWithValue("name", obj.Name);
                 cmd.Parameters.AddWithValue("cpf", obj.CPF);
                 cmd.Parameters.AddWithValue("gender", obj.Gender);
