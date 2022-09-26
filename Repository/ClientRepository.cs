@@ -17,9 +17,9 @@ namespace clientsapi.Repository
             _clientDAL = new ClientDAL();
         }
 
-        public IEnumerable<Client> GetClients()
+        public IEnumerable<ClientDTO> GetClients()
         {
-            IEnumerable<Client> clients = _clientDAL.GetClients();
+            IEnumerable<ClientDTO> clients = _clientDAL.GetClients();
             return clients;
         }
 

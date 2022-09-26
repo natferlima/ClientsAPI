@@ -23,7 +23,7 @@ namespace clientsapi.Controllers
         }
         public IHttpActionResult Get()
         {
-            IEnumerable<Client> clients = _clientRepository.GetClients();
+            IEnumerable<ClientDTO> clients = _clientRepository.GetClients();
             return Ok(clients);
         }
 

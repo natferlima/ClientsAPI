@@ -39,7 +39,7 @@ namespace clientsapi
 
             if (response.IsSuccessStatusCode)
             {
-                var clients = response.Content.ReadAsAsync<IEnumerable<Client>>().Result;
+                var clients = response.Content.ReadAsAsync<IEnumerable<ClientDTO>>().Result;
                 var clientsList = clients
                     .Select(client => new
                     {
@@ -47,8 +47,8 @@ namespace clientsapi
                         Nome = client.Name,
                         CPF = client.CPF,
                         Sexo = client.Gender,
-                        IdTipoCliente = client.IdType,
-                        IdSituacaoCliente = client.IdSituation,
+                        Tipo = client.Type,
+                        Situação = client.Situation,
 
                     }).ToList();
                 GridView1.DataSource = clientsList;

@@ -12,26 +12,32 @@ namespace clientsapi.DAL
     {
         string connection = Connection.GetConnectionString();
 
-        public List<Client> GetClients()
+        public List<ClientDTO> GetClients()
         {
-            List<Client> clients = new List<Client>();
+            List<ClientDTO> clients = new List<ClientDTO>();
             SqlConnection conn = new SqlConnection(connection);
+            string sql = "SELECT c.Id, c.Name, c.CPF, c.Gender, c.IdType, c.IdSituation, s.Description as Situation, t.Description as Type " +
+                         "FROM ClientsAPI.dbo.Clients c " +
+                         "INNER JOIN ClientsAPI.dbo.ClientSituations s on c.IdSituation = s.Id " +
+                         "INNER JOIN ClientsAPI.dbo.ClientTypes t on c.IdType = t.Id";
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Clients", conn);
+                SqlCommand cmd = new SqlCommand(sql, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader != null)
                 {
                     while (reader.Read())
                     {
-                        var client = new Client();
+                        var client = new ClientDTO();
                         client.Id = Convert.ToInt32(reader["Id"]);
                         client.Name = reader["Name"].ToString();
                         client.CPF = reader["CPF"].ToString();
                         client.Gender = reader["Gender"].ToString();
                         client.IdType = Convert.ToInt32(reader["IdType"]);
                         client.IdSituation = Convert.ToInt32(reader["IdSituation"]);
+                        client.Situation = reader["Situation"].ToString();
+                        client.Type = reader["Type"].ToString();
                         clients.Add(client);
                     }
                 }
@@ -63,7 +69,6 @@ namespace clientsapi.DAL
                 cmd.Parameters.AddWithValue("idsituation", obj.IdSituation);
                 conn.Open();
                 cmd.ExecuteScalar();
-                //obj.Id = Convert.ToInt32(cmd.ExecuteScalar());
             }
             catch (Exception error)
             {
