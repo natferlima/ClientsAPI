@@ -60,23 +60,30 @@ namespace clientsapi
         {
             Label7.Text = "";
             Label8.Text = "";
-            var uri = "api/client/" + TextBox1.Text;
-            HttpResponseMessage response = httpClient.GetAsync(uri).Result;
-            if(response.IsSuccessStatusCode)
+            if(TextBox1.Text != "")
             {
-                var client = response.Content.ReadAsAsync<Client>().Result;
-                TextBox2.Text = client.Name;
-                TextBox3.Text = client.CPF;
-                TextBox4.Text = client.Gender;
-                DropDownList1.SelectedIndex = client.IdType;
-                DropDownList3.SelectedIndex = client.IdSituation;
+                var uri = "api/client/" + TextBox1.Text;
+                HttpResponseMessage response = httpClient.GetAsync(uri).Result;
+                if(response.IsSuccessStatusCode)
+                {
+                    var client = response.Content.ReadAsAsync<Client>().Result;
+                    TextBox2.Text = client.Name;
+                    TextBox3.Text = client.CPF;
+                    TextBox4.Text = client.Gender;
+                    DropDownList1.SelectedIndex = client.IdType;
+                    DropDownList3.SelectedIndex = client.IdSituation;
+                }
+                else
+                {
+                    Label7.Text = "Cliente não encontrado";
+                    TextBox2.Text = "";
+                    TextBox3.Text = "";
+                    TextBox4.Text = "";
+                }
             }
             else
             {
-                Label7.Text = "Cliente não encontrado";
-                TextBox2.Text = "";
-                TextBox3.Text = "";
-                TextBox4.Text = "";
+                Label7.Text = "É obrigatório informar o id do cliente.";
             }
             
 
@@ -167,35 +174,78 @@ namespace clientsapi
 
         protected void Button3_Click(object sender, EventArgs e)
         {
+            Label7.Text = "";
+            Label8.Text = "";
+            if(TextBox1.Text != "")
+            {
+                var uri = "api/client/" + TextBox1.Text;
+                Client client = new Client()
+                {
+                    Name = TextBox2.Text,
+                    CPF = TextBox3.Text,
+                    IdType = DropDownList1.SelectedIndex,
+                    Gender = TextBox4.Text,
+                    IdSituation = DropDownList3.SelectedIndex,
+                };
 
+                HttpResponseMessage response = httpClient.PutAsJsonAsync(uri, client).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Label8.Text = "As informações do cliente foram atualizadas com sucesso!";
+                    Label7.Text = "";
+                    TextBox1.Text = "";
+                    TextBox2.Text = "";
+                    TextBox3.Text = "";
+                    TextBox4.Text = "";
+                    DropDownList1.ClearSelection();
+                    DropDownList3.ClearSelection();
+                    GetClients();
+                }
+                else
+                {
+                    Label8.Text = "Não foi possível atualizar as informaçãoes cliente.";
+                }
+            }
+            else
+            {
+                Label7.Text = "É obrigatório informar o id do cliente.";
+            }
         }
 
         protected void Button4_Click(object sender, EventArgs e)
         {
             Label7.Text = "";
             Label8.Text = "";
-            var uri = "api/client/" + TextBox1.Text;
-            HttpResponseMessage response = httpClient.DeleteAsync(uri).Result;
-            if (response.IsSuccessStatusCode)
+            if(TextBox1.Text != "")
             {
-                Label8.Text = "Cliente removido com sucesso!";
-                TextBox1.Text = "";
-                TextBox2.Text = "";
-                TextBox3.Text = "";
-                TextBox4.Text = "";
-                DropDownList1.ClearSelection();
-                DropDownList3.ClearSelection();
-                GetClients();
+                var uri = "api/client/" + TextBox1.Text;
+                HttpResponseMessage response = httpClient.DeleteAsync(uri).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    Label8.Text = "Cliente removido com sucesso!";
+                    TextBox1.Text = "";
+                    TextBox2.Text = "";
+                    TextBox3.Text = "";
+                    TextBox4.Text = "";
+                    DropDownList1.ClearSelection();
+                    DropDownList3.ClearSelection();
+                    GetClients();
+                }
+                else
+                {
+                    Label8.Text = "Não foi possível remover o cliente.";
+                    TextBox1.Text = "";
+                    TextBox2.Text = "";
+                    TextBox3.Text = "";
+                    TextBox4.Text = "";
+                    DropDownList1.ClearSelection();
+                    DropDownList3.ClearSelection();
+                }
             }
             else
             {
-                Label8.Text = "Não foi possível remover o cliente.";
-                TextBox1.Text = "";
-                TextBox2.Text = "";
-                TextBox3.Text = "";
-                TextBox4.Text = "";
-                DropDownList1.ClearSelection();
-                DropDownList3.ClearSelection();
+                Label7.Text = "É obrigatório informar o id do cliente.";
             }
         }
 

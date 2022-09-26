@@ -61,11 +61,18 @@ namespace clientsapi.Repository
             return validation;
         }
 
-        public Validation Update(Client client)
+        public Validation Update(string id, Client client)
         {
             Validation validation = new Validation();
             try
             {
+                Client getClient = _clientDAL.GetClientById(id);
+                if(getClient == null || getClient.Id == 0)
+                {
+                    validation.Error = "Cliente não encontrado.";
+                    return validation;
+                }
+                client.Id = Convert.ToInt32(id);
                 _clientDAL.Update(client);
                 validation.Message = "Cliente atualizado com sucesso!";
                 return validation;

@@ -62,16 +62,22 @@ namespace clientsapi.Controllers
             return Ok(client);
         }
 
-        public IHttpActionResult Put(Client client)
+        public IHttpActionResult Put(string id, Client client)
         {
-            Validation validation = _clientRepository.Update(client);
-
-            if(validation.Error != null)
+            Validation validation = _clientValidator.ValidatorAdd(client);
+            if (validation.Error != null)
             {
                 return BadRequest(validation.Error);
             }
 
-            return Ok(validation.Message);
+            Validation result = _clientRepository.Update(id, client);
+
+            if(result.Error != null)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return Ok(result.Message);
         }
     }
 }
