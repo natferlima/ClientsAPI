@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace clientsapi
 {
@@ -154,10 +156,11 @@ namespace clientsapi
             };
 
             HttpResponseMessage response = httpClient.PostAsJsonAsync("api/client/", client).Result;
+            var message = response.Content.ReadAsStringAsync().Result;
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                Label8.Text = "Cliente cadastrado com sucesso!";
+                Label8.Text = message;
                 TextBox2.Text = "";
                 TextBox3.Text = "";
                 TextBox4.Text = "";
@@ -167,7 +170,7 @@ namespace clientsapi
             }
             else 
             {
-                Label8.Text = "Não foi possível cadastrar o cliente.";
+                Label8.Text = message.Split('\"')[3];
             }
 
         }
@@ -189,10 +192,11 @@ namespace clientsapi
                 };
 
                 HttpResponseMessage response = httpClient.PutAsJsonAsync(uri, client).Result;
+                var message = response.Content.ReadAsStringAsync().Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Label8.Text = "As informações do cliente foram atualizadas com sucesso!";
+                    Label8.Text = message;
                     Label7.Text = "";
                     TextBox1.Text = "";
                     TextBox2.Text = "";
@@ -204,7 +208,7 @@ namespace clientsapi
                 }
                 else
                 {
-                    Label8.Text = "Não foi possível atualizar as informaçãoes cliente.";
+                    Label8.Text = message.Split('\"')[3];
                 }
             }
             else
@@ -220,10 +224,13 @@ namespace clientsapi
             if(TextBox1.Text != "")
             {
                 var uri = "api/client/" + TextBox1.Text;
+
                 HttpResponseMessage response = httpClient.DeleteAsync(uri).Result;
+                var message = response.Content.ReadAsStringAsync().Result;
+
                 if (response.IsSuccessStatusCode)
                 {
-                    Label8.Text = "Cliente removido com sucesso!";
+                    Label8.Text = message;
                     TextBox1.Text = "";
                     TextBox2.Text = "";
                     TextBox3.Text = "";
@@ -234,7 +241,7 @@ namespace clientsapi
                 }
                 else
                 {
-                    Label8.Text = "Não foi possível remover o cliente.";
+                    Label8.Text = message.Split('\"')[3];
                     TextBox1.Text = "";
                     TextBox2.Text = "";
                     TextBox3.Text = "";

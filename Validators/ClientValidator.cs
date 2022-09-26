@@ -29,7 +29,7 @@ namespace clientsapi.Validators
             bool result = Regex.IsMatch(client.CPF, pattern);
             if (!result)
             {
-                validation.Error = "O CPF está no formato inválido, use pontos e traço.";
+                validation.Error = "O CPF está no formato inválido. Use pontos, traço e 11 números.";
                 return validation;
             }
             
