@@ -1,4 +1,5 @@
 ﻿using clientsapi.Models;
+using clientsapi.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,12 @@ namespace clientsapi
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            GetClients();
-            GetClientSituations();
-            GetClientTypes();
+            if(!IsPostBack)
+            {
+                GetClients();
+                GetClientSituations();
+                GetClientTypes();
+            }
         }
 
         private void GetClients()
@@ -95,7 +99,7 @@ namespace clientsapi
 
                 ListItem itemSelect = new ListItem(" Selecione ", "-1");
                 DropDownList3.Items.Insert(0, itemSelect);
-                DropDownList3.DataValueField = "Descrição";
+                DropDownList3.DataValueField = "Text";
                 DropDownList3.DataSource = clientSituations;
             }
         }
@@ -120,9 +124,50 @@ namespace clientsapi
 
                 ListItem itemSelect = new ListItem(" Selecione ", "-1");
                 DropDownList1.Items.Insert(0, itemSelect);
-                DropDownList1.DataValueField = "Descrição";
+                DropDownList1.DataTextField = "Value";
+                DropDownList1.DataValueField = "Text";
                 DropDownList1.DataSource = clientTypes;
             }
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            Client client = new Client()
+            {
+                Name = TextBox2.Text,
+                CPF = TextBox3.Text,
+                IdType = DropDownList1.SelectedIndex,
+                Gender = TextBox4.Text,
+                IdSituation = DropDownList3.SelectedIndex,
+            };
+
+            HttpResponseMessage response = httpClient.PostAsJsonAsync("api/client/", client).Result;
+
+            if(response.IsSuccessStatusCode)
+            {
+                Label8.Text = "Cliente cadastrado com sucesso!";
+                TextBox2.Text = "";
+                TextBox3.Text = "";
+                TextBox4.Text = "";
+                DropDownList1.ClearSelection();
+                DropDownList3.ClearSelection();
+                GetClients();
+            }
+            else 
+            {
+                Label8.Text = "Não foi possível cadastrar o cliente.";
+            }
+
+        }
+
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

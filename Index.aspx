@@ -38,9 +38,9 @@
             </div>
             <br />
             <div>
-                <asp:Button ID="Button2" runat="server" Text="Inserir" />
-                <asp:Button ID="Button3" runat="server" Text="Atualizar" />
-                <asp:Button ID="Button4" runat="server" Text="Excluir" />
+                <asp:Button ID="Button2" runat="server" Text="Inserir" OnClick="Button2_Click" />
+                <asp:Button ID="Button3" runat="server" Text="Atualizar" OnClick="Button3_Click" />
+                <asp:Button ID="Button4" runat="server" Text="Excluir" OnClick="Button4_Click" />
             </div>
             <div>
                 <asp:Label ID="Label8" runat="server" Text=""></asp:Label>
