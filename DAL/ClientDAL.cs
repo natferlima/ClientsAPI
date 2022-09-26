@@ -1,4 +1,5 @@
-﻿using clientsapi.Models;
+﻿using clientsapi.Data;
+using clientsapi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,7 +10,7 @@ namespace clientsapi.DAL
 {
     public class ClientDAL
     {
-        string connection = @"Data Source=LIMA\SQLEXPRESS;Initial Catalog=ClientsAPI;Integrated Security=True";
+        string connection = Connection.GetConnectionString();
 
         public List<Client> GetClients()
         {

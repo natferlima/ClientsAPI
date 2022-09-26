@@ -93,6 +93,7 @@
     <Compile Include="DAL\ClientDAL.cs" />
     <Compile Include="DAL\ClientSituationDAL.cs" />
     <Compile Include="DAL\ClientTypeDAL.cs" />
+    <Compile Include="Data\Connection.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
