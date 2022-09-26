@@ -89,8 +89,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\ClientSituationController.cs" />
+    <Compile Include="Controllers\ClientTypeController.cs" />
     <Compile Include="DAL\ClientDAL.cs" />
     <Compile Include="DAL\ClientSituationDAL.cs" />
+    <Compile Include="DAL\ClientTypeDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -107,6 +109,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ClientRepository.cs" />
     <Compile Include="Repository\ClientSituationRepository.cs" />
+    <Compile Include="Repository\ClientTypeRepository.cs" />
     <Compile Include="Validators\ClientValidator.cs" />
     <Compile Include="Validators\Validation.cs" />
   </ItemGroup>
