@@ -59,6 +59,7 @@ namespace clientsapi
         protected void Button1_Click(object sender, EventArgs e)
         {
             Label7.Text = "";
+            Label8.Text = "";
             var uri = "api/client/" + TextBox1.Text;
             HttpResponseMessage response = httpClient.GetAsync(uri).Result;
             if(response.IsSuccessStatusCode)
@@ -67,6 +68,8 @@ namespace clientsapi
                 TextBox2.Text = client.Name;
                 TextBox3.Text = client.CPF;
                 TextBox4.Text = client.Gender;
+                DropDownList1.SelectedIndex = client.IdType;
+                DropDownList3.SelectedIndex = client.IdSituation;
             }
             else
             {
@@ -132,6 +135,8 @@ namespace clientsapi
 
         protected void Button2_Click(object sender, EventArgs e)
         {
+            Label7.Text = "";
+            Label8.Text = "";
             Client client = new Client()
             {
                 Name = TextBox2.Text,
@@ -167,7 +172,43 @@ namespace clientsapi
 
         protected void Button4_Click(object sender, EventArgs e)
         {
+            Label7.Text = "";
+            Label8.Text = "";
+            var uri = "api/client/" + TextBox1.Text;
+            HttpResponseMessage response = httpClient.DeleteAsync(uri).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Label8.Text = "Cliente removido com sucesso!";
+                TextBox1.Text = "";
+                TextBox2.Text = "";
+                TextBox3.Text = "";
+                TextBox4.Text = "";
+                DropDownList1.ClearSelection();
+                DropDownList3.ClearSelection();
+                GetClients();
+            }
+            else
+            {
+                Label8.Text = "Não foi possível remover o cliente.";
+                TextBox1.Text = "";
+                TextBox2.Text = "";
+                TextBox3.Text = "";
+                TextBox4.Text = "";
+                DropDownList1.ClearSelection();
+                DropDownList3.ClearSelection();
+            }
+        }
 
+        protected void Button5_Click(object sender, EventArgs e)
+        {
+            Label7.Text = "";
+            Label8.Text = "";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+            TextBox3.Text = "";
+            TextBox4.Text = "";
+            DropDownList1.ClearSelection();
+            DropDownList3.ClearSelection();
         }
     }
 }
